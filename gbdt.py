@@ -62,6 +62,9 @@ class GBDTClassificationScratch(GBDTScratch):
             # 每个类别分别学习提升树
             for j in range(self._n_class):
                 residual_gradient = self._loss.calc_gradient(y[:, j], residual_pred[:, j])
+                # 请问这里在classification tree 的情况下也使用regression tree吗？
+                # 但是如果不用，上面的residual gradient算出来应该不是一个discrete的数字，似乎用classification tree并不合理
+                # 不知道up主还做视频吗，希望能够讲解
                 tree = CARTRegressionScratch(self._min_sample, self._min_gain, self._max_depth)
                 # 每棵树以残差为目标进行训练
                 tree.fit(X, residual_gradient)
